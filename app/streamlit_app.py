@@ -112,14 +112,6 @@ with st.sidebar:
         f"Test F1-Score: **{metrics_summary['metrics'][0]['Test_F1']:.4f}**  \n"
         f"ROC-AUC: **{metrics_summary['metrics'][0]['Test_ROC_AUC']:.4f}**"
     )
-
-    st.markdown("### Project Scope")
-    st.markdown(
-        "- 6 Non-Linear ML Models Compared  \n"
-        "- No Linear / Logistic Regression  \n"
-        "- SHAP & LIME Explainability  \n"
-        "- 22 URL & SL Domain Features"
-    )
     st.divider()
     decision_threshold = st.slider(
         "Classification Threshold",
