@@ -8,6 +8,7 @@ MSc Applied Machine Learning project focused on detecting phishing and SMS smish
 - **Model Explainability:** Computes global and local explanations using `SHAP` (`TreeExplainer`) and `LIME` (`LimeTabularExplainer`) (`src/explainability.py`).
 - **MLOps & Drift Monitoring:** Tracks model registry metadata, CI/CD quality gates, and statistical feature drift via Population Stability Index (PSI) and Two-Sample KS tests (`src/drift_monitor.py`).
 - **Web Interface:** Streamlit dashboard (`app/streamlit_app.py`) for testing live URLs and viewing model comparisons, SHAP/LIME outputs, and drift monitoring.
+  - **Live Demo:** [https://cybersecurity-threat-detection-pro.streamlit.app/](https://cybersecurity-threat-detection-pro.streamlit.app/)
 
 ## Setup & Usage
 
