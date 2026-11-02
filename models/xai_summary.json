@@ -1,0 +1,265 @@
+{
+  "champion_model": "XGBoost",
+  "shap_latency_ms_per_sample": 0.05,
+  "lime_latency_ms_per_sample": 5.22,
+  "mean_top5_feature_agreement": 0.495,
+  "mean_spearman_rank_correlation": 0.3398,
+  "global_top10_features": [
+    {
+      "Feature": "num_hyphens_in_domain",
+      "Description": "Count of hyphen (-) characters inside the hostname",
+      "Mean_Abs_SHAP": 1.0348000526428223
+    },
+    {
+      "Feature": "has_suspicious_ext",
+      "Description": "Binary flag for risky path extensions (.php, .apk, .exe, .scr, .zip)",
+      "Mean_Abs_SHAP": 0.7045999765396118
+    },
+    {
+      "Feature": "query_param_count",
+      "Description": "Number of query parameters passed in the URL string",
+      "Mean_Abs_SHAP": 0.6757000088691711
+    },
+    {
+      "Feature": "path_length",
+      "Description": "Character length of the URL path and endpoint",
+      "Mean_Abs_SHAP": 0.6425999999046326
+    },
+    {
+      "Feature": "min_brand_edit_distance",
+      "Description": "Normalized Levenshtein similarity distance to closest SL brand (detects typosquatting)",
+      "Mean_Abs_SHAP": 0.5958999991416931
+    },
+    {
+      "Feature": "url_length",
+      "Description": "Total character length of the full URL",
+      "Mean_Abs_SHAP": 0.3546999990940094
+    },
+    {
+      "Feature": "sl_brand_domain_mismatch",
+      "Description": "SL brand keyword appears in URL, but root domain is NOT the official brand domain",
+      "Mean_Abs_SHAP": 0.35280001163482666
+    },
+    {
+      "Feature": "hostname_length",
+      "Description": "Character length of the hostname/domain portion",
+      "Mean_Abs_SHAP": 0.33889999985694885
+    },
+    {
+      "Feature": "special_char_count",
+      "Description": "Total count of special symbols (-, _, @, ?, =, %, &) in the URL",
+      "Mean_Abs_SHAP": 0.3319999873638153
+    },
+    {
+      "Feature": "urgency_keyword_count",
+      "Description": "Count of social-engineering urgency words (verify, customs, parcel, otp, kyc, suspend)",
+      "Mean_Abs_SHAP": 0.29739999771118164
+    }
+  ],
+  "case_studies": [
+    {
+      "slug": "case1_sl_phishing_tp",
+      "title": "Case Study 1: Localized SL Phishing Attack (True Positive)",
+      "url": "http://103.145.22.127/sampath-vishwa/login.php?token=236enmktps",
+      "category": "SL_Phishing_IP_or_Redirect",
+      "actual_label": 1,
+      "pred_prob": 0.999,
+      "top5_shap_features": [
+        "has_suspicious_ext",
+        "has_ip_address",
+        "query_param_count",
+        "digit_ratio",
+        "min_brand_edit_distance"
+      ],
+      "top5_lime_features": [
+        "has_suspicious_ext",
+        "has_at_or_double_slash",
+        "has_ip_address",
+        "query_param_count",
+        "min_brand_edit_distance"
+      ],
+      "top5_overlap_count": 4,
+      "lime_rules": [
+        {
+          "rule": "has_suspicious_ext > 0.00",
+          "weight": 0.4273
+        },
+        {
+          "rule": "has_at_or_double_slash <= 0.00",
+          "weight": -0.2404
+        },
+        {
+          "rule": "has_ip_address > 0.00",
+          "weight": 0.1733
+        },
+        {
+          "rule": "0.00 < query_param_count <= 1.00",
+          "weight": 0.1657
+        },
+        {
+          "rule": "min_brand_edit_distance > 0.66",
+          "weight": -0.1577
+        },
+        {
+          "rule": "num_hyphens_in_domain <= 0.00",
+          "weight": -0.1524
+        },
+        {
+          "rule": "is_shortened_url <= 0.00",
+          "weight": -0.1429
+        },
+        {
+          "rule": "digit_ratio > 0.11",
+          "weight": 0.0641
+        },
+        {
+          "rule": "0.00 < sl_brand_domain_mismatch <= 1.00",
+          "weight": 0.0379
+        },
+        {
+          "rule": "https_token_in_domain <= 0.00",
+          "weight": 0.0253
+        }
+      ],
+      "shap_figure": "11_shap_waterfall_case1_sl_phishing_tp.png",
+      "lime_figure": "12_lime_local_case1_sl_phishing_tp.png",
+      "lime_latency_ms": 8.45
+    },
+    {
+      "slug": "case2_sl_legit_tn",
+      "title": "Case Study 2: Authentic Sri Lankan .lk Portal (True Negative)",
+      "url": "http://www.slpost.gov.lk/customs/parcel-clearance-guidelines?doc=9449587&dept=slpost&type=tax",
+      "category": "SL_Legitimate_E-Government",
+      "actual_label": 0,
+      "pred_prob": 0.0008,
+      "top5_shap_features": [
+        "query_param_count",
+        "num_hyphens_in_domain",
+        "urgency_keyword_count",
+        "path_length",
+        "special_char_count"
+      ],
+      "top5_lime_features": [
+        "has_suspicious_ext",
+        "has_at_or_double_slash",
+        "path_length",
+        "num_hyphens_in_domain",
+        "min_brand_edit_distance"
+      ],
+      "top5_overlap_count": 2,
+      "lime_rules": [
+        {
+          "rule": "has_suspicious_ext <= 0.00",
+          "weight": -0.4375
+        },
+        {
+          "rule": "has_at_or_double_slash <= 0.00",
+          "weight": -0.2156
+        },
+        {
+          "rule": "path_length > 31.00",
+          "weight": -0.2054
+        },
+        {
+          "rule": "num_hyphens_in_domain <= 0.00",
+          "weight": -0.178
+        },
+        {
+          "rule": "min_brand_edit_distance <= 0.04",
+          "weight": 0.1541
+        },
+        {
+          "rule": "urgency_keyword_count > 2.00",
+          "weight": -0.122
+        },
+        {
+          "rule": "url_length > 77.00",
+          "weight": -0.1186
+        },
+        {
+          "rule": "is_shortened_url <= 0.00",
+          "weight": -0.1159
+        },
+        {
+          "rule": "special_char_count > 8.00",
+          "weight": -0.0895
+        },
+        {
+          "rule": "query_param_count > 1.00",
+          "weight": -0.0865
+        }
+      ],
+      "shap_figure": "11_shap_waterfall_case2_sl_legit_tn.png",
+      "lime_figure": "12_lime_local_case2_sl_legit_tn.png",
+      "lime_latency_ms": 7.64
+    },
+    {
+      "slug": "case3_stealth_edge",
+      "title": "Case Study 3: Stealth Phishing URL Analysis",
+      "url": "https://vishwa-portal.org/app/q2c07q",
+      "category": "Stealth_or_Global_Phishing",
+      "actual_label": 1,
+      "pred_prob": 0.7624,
+      "top5_shap_features": [
+        "num_hyphens_in_domain",
+        "sl_brand_domain_mismatch",
+        "hostname_length",
+        "url_length",
+        "url_entropy"
+      ],
+      "top5_lime_features": [
+        "has_suspicious_ext",
+        "has_at_or_double_slash",
+        "is_shortened_url",
+        "url_length",
+        "path_length"
+      ],
+      "top5_overlap_count": 1,
+      "lime_rules": [
+        {
+          "rule": "has_suspicious_ext <= 0.00",
+          "weight": -0.415
+        },
+        {
+          "rule": "has_at_or_double_slash <= 0.00",
+          "weight": -0.2221
+        },
+        {
+          "rule": "is_shortened_url <= 0.00",
+          "weight": -0.189
+        },
+        {
+          "rule": "url_length <= 49.00",
+          "weight": 0.1412
+        },
+        {
+          "rule": "path_length <= 15.00",
+          "weight": 0.1239
+        },
+        {
+          "rule": "0.00 < num_hyphens_in_domain <= 2.00",
+          "weight": 0.1121
+        },
+        {
+          "rule": "query_param_count <= 0.00",
+          "weight": -0.112
+        },
+        {
+          "rule": "has_ip_address <= 0.00",
+          "weight": -0.1003
+        },
+        {
+          "rule": "0.44 < min_brand_edit_distance <= 0.66",
+          "weight": -0.0711
+        },
+        {
+          "rule": "https_token_in_domain <= 0.00",
+          "weight": -0.043
+        }
+      ],
+      "shap_figure": "11_shap_waterfall_case3_stealth_edge.png",
+      "lime_figure": "12_lime_local_case3_stealth_edge.png",
+      "lime_latency_ms": 7.43
+    }
+  ]
+}

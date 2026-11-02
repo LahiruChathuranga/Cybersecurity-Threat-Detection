@@ -1,0 +1,23 @@
+Feature,Description,Mean_Abs_SHAP
+num_hyphens_in_domain,Count of hyphen (-) characters inside the hostname,1.0348
+has_suspicious_ext,"Binary flag for risky path extensions (.php, .apk, .exe, .scr, .zip)",0.7046
+query_param_count,Number of query parameters passed in the URL string,0.6757
+path_length,Character length of the URL path and endpoint,0.6426
+min_brand_edit_distance,Normalized Levenshtein similarity distance to closest SL brand (detects typosquatting),0.5959
+url_length,Total character length of the full URL,0.3547
+sl_brand_domain_mismatch,"SL brand keyword appears in URL, but root domain is NOT the official brand domain",0.3528
+hostname_length,Character length of the hostname/domain portion,0.3389
+special_char_count,"Total count of special symbols (-, _, @, ?, =, %, &) in the URL",0.332
+urgency_keyword_count,"Count of social-engineering urgency words (verify, customs, parcel, otp, kyc, suspend)",0.2974
+digit_ratio,Proportion of numeric digits relative to total URL length,0.275
+url_entropy,Shannon information entropy of the URL string (measures randomness),0.2323
+num_subdomains,Subdomain depth level (number of subdomain prefixes before root domain),0.2107
+has_at_or_double_slash,Binary flag for @ credential trick or // open-redirect in URL path,0.194
+is_official_lk_domain,"Verified Sri Lankan (.lk, .gov.lk, .ac.lk, .com.lk, .org.lk) root domain",0.1775
+is_shortened_url,"Binary flag for SMS URL shorteners (bit.ly, tinyurl, cutt.ly, etc.)",0.1455
+sl_brand_mentioned,"Presence of a major Sri Lankan bank, telco, utility, or gov brand keyword",0.1233
+fake_lk_in_url,"Deceptive 'lk', 'gov-lk', or 'srilanka' token hosted on a foreign non-.lk TLD",0.0674
+uses_https,"Binary flag indicating whether the URL uses HTTPS protocol (1=HTTPS, 0=HTTP)",0.0632
+has_ip_address,Binary flag indicating if the host is a raw IPv4/hex address instead of a domain,0.063
+high_risk_tld,"Domain uses a high-risk TLD (.top, .xyz, .icu, .vip, .buzz, .online, .sbs)",0.051
+https_token_in_domain,Deceptive presence of 'https' or 'ssl' inside the domain name itself,0.0004

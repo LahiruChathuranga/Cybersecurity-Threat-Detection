@@ -1,0 +1,271 @@
+{
+  "best_model": "XGBoost",
+  "feature_names": [
+    "url_length",
+    "hostname_length",
+    "path_length",
+    "url_entropy",
+    "digit_ratio",
+    "special_char_count",
+    "num_hyphens_in_domain",
+    "has_at_or_double_slash",
+    "uses_https",
+    "https_token_in_domain",
+    "has_ip_address",
+    "num_subdomains",
+    "is_shortened_url",
+    "has_suspicious_ext",
+    "query_param_count",
+    "is_official_lk_domain",
+    "fake_lk_in_url",
+    "sl_brand_mentioned",
+    "sl_brand_domain_mismatch",
+    "min_brand_edit_distance",
+    "high_risk_tld",
+    "urgency_keyword_count"
+  ],
+  "feature_descriptions": {
+    "url_length": "Total character length of the full URL",
+    "hostname_length": "Character length of the hostname/domain portion",
+    "path_length": "Character length of the URL path and endpoint",
+    "url_entropy": "Shannon information entropy of the URL string (measures randomness)",
+    "digit_ratio": "Proportion of numeric digits relative to total URL length",
+    "special_char_count": "Total count of special symbols (-, _, @, ?, =, %, &) in the URL",
+    "num_hyphens_in_domain": "Count of hyphen (-) characters inside the hostname",
+    "has_at_or_double_slash": "Binary flag for @ credential trick or // open-redirect in URL path",
+    "uses_https": "Binary flag indicating whether the URL uses HTTPS protocol (1=HTTPS, 0=HTTP)",
+    "https_token_in_domain": "Deceptive presence of 'https' or 'ssl' inside the domain name itself",
+    "has_ip_address": "Binary flag indicating if the host is a raw IPv4/hex address instead of a domain",
+    "num_subdomains": "Subdomain depth level (number of subdomain prefixes before root domain)",
+    "is_shortened_url": "Binary flag for SMS URL shorteners (bit.ly, tinyurl, cutt.ly, etc.)",
+    "has_suspicious_ext": "Binary flag for risky path extensions (.php, .apk, .exe, .scr, .zip)",
+    "query_param_count": "Number of query parameters passed in the URL string",
+    "is_official_lk_domain": "Verified Sri Lankan (.lk, .gov.lk, .ac.lk, .com.lk, .org.lk) root domain",
+    "fake_lk_in_url": "Deceptive 'lk', 'gov-lk', or 'srilanka' token hosted on a foreign non-.lk TLD",
+    "sl_brand_mentioned": "Presence of a major Sri Lankan bank, telco, utility, or gov brand keyword",
+    "sl_brand_domain_mismatch": "SL brand keyword appears in URL, but root domain is NOT the official brand domain",
+    "min_brand_edit_distance": "Normalized Levenshtein similarity distance to closest SL brand (detects typosquatting)",
+    "high_risk_tld": "Domain uses a high-risk TLD (.top, .xyz, .icu, .vip, .buzz, .online, .sbs)",
+    "urgency_keyword_count": "Count of social-engineering urgency words (verify, customs, parcel, otp, kyc, suspend)"
+  },
+  "metrics": [
+    {
+      "Model": "XGBoost",
+      "Test_Accuracy": 0.97,
+      "Test_Precision": 0.973,
+      "Test_Recall": 0.9665,
+      "Test_Specificity": 0.9735,
+      "Test_F1": 0.9698,
+      "Test_ROC_AUC": 0.9828,
+      "Test_PR_AUC": 0.9802,
+      "Test_MCC": 0.94,
+      "Test_Kappa": 0.94,
+      "Brier_Score": 0.0302,
+      "False_Positive_Rate": 0.0265,
+      "False_Negative_Rate": 0.0335,
+      "TN": 440,
+      "FP": 12,
+      "FN": 15,
+      "TP": 433,
+      "CV_F1_Mean": 0.9665,
+      "CV_F1_Std": 0.0054,
+      "CV_ROC_AUC_Mean": 0.975,
+      "CV_ROC_AUC_Std": 0.002,
+      "Train_Time_s": 0.2818,
+      "Inference_Latency_ms": 0.3616,
+      "Artifact_File": "xgboost.joblib"
+    },
+    {
+      "Model": "SVM (RBF Kernel)",
+      "Test_Accuracy": 0.9689,
+      "Test_Precision": 0.9773,
+      "Test_Recall": 0.9598,
+      "Test_Specificity": 0.9779,
+      "Test_F1": 0.9685,
+      "Test_ROC_AUC": 0.9819,
+      "Test_PR_AUC": 0.9764,
+      "Test_MCC": 0.9379,
+      "Test_Kappa": 0.9378,
+      "Brier_Score": 0.0284,
+      "False_Positive_Rate": 0.0221,
+      "False_Negative_Rate": 0.0402,
+      "TN": 442,
+      "FP": 10,
+      "FN": 18,
+      "TP": 430,
+      "CV_F1_Mean": 0.9692,
+      "CV_F1_Std": 0.0031,
+      "CV_ROC_AUC_Mean": 0.977,
+      "CV_ROC_AUC_Std": 0.0061,
+      "Train_Time_s": 0.2794,
+      "Inference_Latency_ms": 0.2986,
+      "Artifact_File": "svm_rbf_kernel.joblib"
+    },
+    {
+      "Model": "LightGBM",
+      "Test_Accuracy": 0.9667,
+      "Test_Precision": 0.9686,
+      "Test_Recall": 0.9643,
+      "Test_Specificity": 0.969,
+      "Test_F1": 0.9664,
+      "Test_ROC_AUC": 0.9822,
+      "Test_PR_AUC": 0.9805,
+      "Test_MCC": 0.9333,
+      "Test_Kappa": 0.9333,
+      "Brier_Score": 0.0303,
+      "False_Positive_Rate": 0.031,
+      "False_Negative_Rate": 0.0357,
+      "TN": 438,
+      "FP": 14,
+      "FN": 16,
+      "TP": 432,
+      "CV_F1_Mean": 0.9666,
+      "CV_F1_Std": 0.0047,
+      "CV_ROC_AUC_Mean": 0.9752,
+      "CV_ROC_AUC_Std": 0.0014,
+      "Train_Time_s": 0.6028,
+      "Inference_Latency_ms": 0.4295,
+      "Artifact_File": "lightgbm.joblib"
+    },
+    {
+      "Model": "Random Forest",
+      "Test_Accuracy": 0.9633,
+      "Test_Precision": 0.977,
+      "Test_Recall": 0.9487,
+      "Test_Specificity": 0.9779,
+      "Test_F1": 0.9626,
+      "Test_ROC_AUC": 0.9809,
+      "Test_PR_AUC": 0.9794,
+      "Test_MCC": 0.927,
+      "Test_Kappa": 0.9267,
+      "Brier_Score": 0.0382,
+      "False_Positive_Rate": 0.0221,
+      "False_Negative_Rate": 0.0513,
+      "TN": 442,
+      "FP": 10,
+      "FN": 23,
+      "TP": 425,
+      "CV_F1_Mean": 0.9644,
+      "CV_F1_Std": 0.005,
+      "CV_ROC_AUC_Mean": 0.9746,
+      "CV_ROC_AUC_Std": 0.0019,
+      "Train_Time_s": 0.1636,
+      "Inference_Latency_ms": 11.942,
+      "Artifact_File": "random_forest.joblib"
+    },
+    {
+      "Model": "MLP Neural Net",
+      "Test_Accuracy": 0.9578,
+      "Test_Precision": 0.9576,
+      "Test_Recall": 0.9576,
+      "Test_Specificity": 0.958,
+      "Test_F1": 0.9576,
+      "Test_ROC_AUC": 0.98,
+      "Test_PR_AUC": 0.9739,
+      "Test_MCC": 0.9156,
+      "Test_Kappa": 0.9156,
+      "Brier_Score": 0.0348,
+      "False_Positive_Rate": 0.042,
+      "False_Negative_Rate": 0.0424,
+      "TN": 433,
+      "FP": 19,
+      "FN": 19,
+      "TP": 429,
+      "CV_F1_Mean": 0.9665,
+      "CV_F1_Std": 0.0038,
+      "CV_ROC_AUC_Mean": 0.9765,
+      "CV_ROC_AUC_Std": 0.0048,
+      "Train_Time_s": 0.1736,
+      "Inference_Latency_ms": 0.2849,
+      "Artifact_File": "mlp_neural_net.joblib"
+    },
+    {
+      "Model": "Gaussian Naive Bayes",
+      "Test_Accuracy": 0.8178,
+      "Test_Precision": 0.908,
+      "Test_Recall": 0.7054,
+      "Test_Specificity": 0.9292,
+      "Test_F1": 0.794,
+      "Test_ROC_AUC": 0.9106,
+      "Test_PR_AUC": 0.9094,
+      "Test_MCC": 0.6515,
+      "Test_Kappa": 0.6352,
+      "Brier_Score": 0.1749,
+      "False_Positive_Rate": 0.0708,
+      "False_Negative_Rate": 0.2946,
+      "TN": 420,
+      "FP": 32,
+      "FN": 132,
+      "TP": 316,
+      "CV_F1_Mean": 0.8011,
+      "CV_F1_Std": 0.0176,
+      "CV_ROC_AUC_Mean": 0.915,
+      "CV_ROC_AUC_Std": 0.0068,
+      "Train_Time_s": 0.0019,
+      "Inference_Latency_ms": 0.3016,
+      "Artifact_File": "gaussian_naive_bayes.joblib"
+    }
+  ],
+  "confusion_matrices": {
+    "XGBoost": [
+      [
+        440,
+        12
+      ],
+      [
+        15,
+        433
+      ]
+    ],
+    "LightGBM": [
+      [
+        438,
+        14
+      ],
+      [
+        16,
+        432
+      ]
+    ],
+    "Random Forest": [
+      [
+        442,
+        10
+      ],
+      [
+        23,
+        425
+      ]
+    ],
+    "SVM (RBF Kernel)": [
+      [
+        442,
+        10
+      ],
+      [
+        18,
+        430
+      ]
+    ],
+    "MLP Neural Net": [
+      [
+        433,
+        19
+      ],
+      [
+        19,
+        429
+      ]
+    ],
+    "Gaussian Naive Bayes": [
+      [
+        420,
+        32
+      ],
+      [
+        132,
+        316
+      ]
+    ]
+  }
+}

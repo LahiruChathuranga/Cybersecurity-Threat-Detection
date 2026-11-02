@@ -1,0 +1,18 @@
+# Byte-compiled /虛擬環境 / IDE files
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.idea/
+.vscode/
+.DS_Store
+
+# Strictly exclude all written reports, guides, viva scripts, and PDF generation scripts
+# (while keeping reports/figures/*.png so the Streamlit app charts work)
+*.pdf
+reports/*.md
+reports/*.pdf
+!*_curves.png
+src/generate_pdf_reports.py
