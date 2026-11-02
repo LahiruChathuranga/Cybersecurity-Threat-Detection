@@ -16,3 +16,4 @@ reports/*.md
 reports/*.pdf
 !*_curves.png
 src/generate_pdf_reports.py
+catboost_info/
