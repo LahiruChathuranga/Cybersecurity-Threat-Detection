@@ -70,7 +70,9 @@ st.markdown(
 
 @st.cache_resource
 def load_artifacts():
-    """Load all 6 trained models, dataset splits, and SHAP/LIME explainers."""
+    """Load all 6 trained models, dataset splits, and SHAP/LIME explainers.
+    Automatically trains models on the fly if pickled across a different Python/scikit-learn version (e.g., Streamlit Community Cloud).
+    """
     with open("models/metrics_summary.json", "r") as f:
         metrics_summary = json.load(f)
     with open("models/xai_summary.json", "r") as f:
@@ -81,12 +83,27 @@ def load_artifacts():
     full_df = pd.read_csv("data/raw/srilanka_phishing_dataset.csv")
 
     all_models = {}
-    for m_info in metrics_summary["metrics"]:
-        m_name = m_info["Model"]
-        art_path = os.path.join("models/all_models", m_info["Artifact_File"])
-        all_models[m_name] = joblib.load(art_path)
+    try:
+        for m_info in metrics_summary["metrics"]:
+            m_name = m_info["Model"]
+            art_path = os.path.join("models/all_models", m_info["Artifact_File"])
+            pipe = joblib.load(art_path)
+            # Test a single dummy prediction to verify scikit-learn / numpy C-extension compatibility
+            _ = pipe.predict_proba(train_df[FEATURE_NAMES].iloc[[0]])
+            all_models[m_name] = pipe
+        best_model = joblib.load("models/best_model.joblib")
+        _ = best_model.predict_proba(train_df[FEATURE_NAMES].iloc[[0]])
+    except Exception:
+        # Fallback: swiftly fit the 6 models directly in the cloud environment (~1.2 seconds)
+        from src.train_and_evaluate import build_models
+        raw_models = build_models()
+        X_tr = train_df[FEATURE_NAMES]
+        y_tr = train_df["label"]
+        for m_name, pipe in raw_models.items():
+            pipe.fit(X_tr, y_tr)
+            all_models[m_name] = pipe
+        best_model = all_models[metrics_summary["best_model"]]
 
-    best_model = joblib.load("models/best_model.joblib")
     scaler = best_model.named_steps["scaler"]
     clf = best_model.named_steps["clf"]
     shap_explainer = shap.TreeExplainer(clf)
