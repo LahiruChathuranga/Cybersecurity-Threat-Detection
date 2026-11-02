@@ -1,7 +1,7 @@
 """
 Model training, cross-validation, and evaluation script.
-Compares 6 non-linear classifiers (Random Forest, XGBoost, LightGBM, SVM-RBF, MLP, and Gaussian Naive Bayes)
-without using Linear or Logistic Regression.
+Compares 6 non-linear classifiers (XGBoost, LightGBM, CatBoost, SVM-RBF, Random Forest, and Gaussian Naive Bayes)
+without using Linear Regression, Logistic Regression, or Deep Learning models.
 """
 
 import json
@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
+from catboost import CatBoostClassifier
 from lightgbm import LGBMClassifier
 from sklearn.calibration import calibration_curve
 from sklearn.ensemble import RandomForestClassifier
@@ -33,7 +34,6 @@ from sklearn.metrics import (
 )
 from sklearn.model_selection import StratifiedKFold, cross_validate, train_test_split
 from sklearn.naive_bayes import GaussianNB
-from sklearn.neural_network import MLPClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
@@ -55,9 +55,9 @@ plt.rcParams["axes.linewidth"] = 0.8
 MODEL_COLORS = {
     "XGBoost": "#1f77b4",
     "LightGBM": "#2ca02c",
+    "CatBoost": "#d62728",
     "Random Forest": "#ff7f0e",
     "SVM (RBF Kernel)": "#9467bd",
-    "MLP Neural Net": "#d62728",
     "Gaussian Naive Bayes": "#8c564b",
 }
 
@@ -65,7 +65,7 @@ MODEL_COLORS = {
 def build_models() -> dict[str, Pipeline]:
     """
     Construct the 6 non-linear ML models wrapped in leak-free scikit-learn Pipelines.
-    Note: Linear Regression and Logistic Regression are strictly excluded.
+    Note: Linear Regression, Logistic Regression, and Deep Learning models are strictly excluded.
     """
     models = {
         "XGBoost": Pipeline([
@@ -98,6 +98,18 @@ def build_models() -> dict[str, Pipeline]:
                 n_jobs=-1
             ))
         ]),
+        "CatBoost": Pipeline([
+            ("scaler", StandardScaler()),
+            ("clf", CatBoostClassifier(
+                iterations=250,
+                depth=6,
+                learning_rate=0.08,
+                l2_leaf_reg=3.0,
+                random_seed=SEED,
+                verbose=0,
+                thread_count=-1
+            ))
+        ]),
         "Random Forest": Pipeline([
             ("scaler", StandardScaler()),
             ("clf", RandomForestClassifier(
@@ -117,18 +129,6 @@ def build_models() -> dict[str, Pipeline]:
                 C=3.0,
                 gamma="scale",
                 probability=True,
-                random_state=SEED
-            ))
-        ]),
-        "MLP Neural Net": Pipeline([
-            ("scaler", StandardScaler()),
-            ("clf", MLPClassifier(
-                hidden_layer_sizes=(128, 64, 32),
-                activation="relu",
-                alpha=0.005,
-                learning_rate_init=0.001,
-                max_iter=300,
-                early_stopping=True,
                 random_state=SEED
             ))
         ]),
@@ -449,10 +449,10 @@ def evaluate_and_compare():
     # Distinct non-overlapping callout offsets (dx, dy in points) for each model on log-x scale
     label_offsets = {
         "XGBoost": (28, 22),
-        "SVM (RBF Kernel)": (-132, 16),
+        "SVM (RBF Kernel)": (-120, 18),
         "LightGBM": (38, -22),
         "Random Forest": (-128, -42),
-        "MLP Neural Net": (-110, -48),
+        "CatBoost": (-85, -52),
         "Gaussian Naive Bayes": (25, 6),
     }
 
@@ -486,8 +486,8 @@ def evaluate_and_compare():
     axes[0].set_ylabel("Test F1-Score [Higher is Better]", fontsize=10.5)
     axes[0].set_title("A. Operational Trade-Off: F1-Score vs. Inference Latency", fontsize=12, fontweight="bold")
     axes[0].grid(True, which="both", alpha=0.3)
-    axes[0].set_xlim(0.16, 28.0)
-    axes[0].set_ylim(0.77, 1.005)
+    axes[0].set_xlim(0.06, 28.0)
+    axes[0].set_ylim(0.77, 1.008)
 
     # CV F1 Mean + Error Bars
     y_pos = np.arange(len(results_df))

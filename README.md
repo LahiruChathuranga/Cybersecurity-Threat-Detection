@@ -4,9 +4,10 @@ MSc Applied Machine Learning project focused on detecting phishing and SMS smish
 
 ## Overview
 - **Feature Extraction:** Extracts 22 URL lexical, host structure, and Sri Lankan `.lk` / brand-mismatch features (`src/feature_extractor.py`).
-- **Model Training & Comparison:** Trains and compares 6 non-linear classification models (`XGBoost`, `SVM with RBF Kernel`, `LightGBM`, `Random Forest`, `MLPClassifier`, and `GaussianNB`) using 5-fold stratified cross-validation (`src/train_and_evaluate.py`). Linear and Logistic Regression are not used.
+- **Model Training & Comparison:** Trains and compares 6 non-linear classification models (`XGBoost`, `CatBoost`, `LightGBM`, `SVM with RBF Kernel`, `Random Forest`, and `GaussianNB`) using 5-fold stratified cross-validation (`src/train_and_evaluate.py`). Linear Regression, Logistic Regression, and Deep Learning models are not used.
 - **Model Explainability:** Computes global and local explanations using `SHAP` (`TreeExplainer`) and `LIME` (`LimeTabularExplainer`) (`src/explainability.py`).
-- **Web Interface:** Streamlit dashboard (`app/streamlit_app.py`) for testing live URLs and viewing model comparisons and SHAP/LIME outputs.
+- **MLOps & Drift Monitoring:** Tracks model registry metadata, CI/CD quality gates, and statistical feature drift via Population Stability Index (PSI) and Two-Sample KS tests (`src/drift_monitor.py`).
+- **Web Interface:** Streamlit dashboard (`app/streamlit_app.py`) for testing live URLs and viewing model comparisons, SHAP/LIME outputs, and drift monitoring.
 
 ## Setup & Usage
 
@@ -21,9 +22,10 @@ pip install -r requirements.txt
 streamlit run app/streamlit_app.py
 ```
 
-3. Re-run the training and evaluation scripts (optional):
+3. Re-run the training, explainability, and MLOps scripts (optional):
 ```bash
 python -m src.data_generator
 python -m src.train_and_evaluate
 python -m src.explainability
+python tests/test_mlops_pipeline.py
 ```

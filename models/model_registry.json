@@ -2,7 +2,7 @@
   "model_name": "sl-phishing-url-detector",
   "production_version": "v1.2.0",
   "selected_algorithm": "XGBoost",
-  "registered_at_utc": "2026-11-02T15:09:02Z",
+  "registered_at_utc": "2026-11-02T15:18:41Z",
   "stage": "Production",
   "data_lineage": {
     "dataset_path": "data/raw/srilanka_phishing_dataset.csv",
@@ -33,7 +33,7 @@
     },
     "max_latency_ms": {
       "threshold": 5.0,
-      "actual": 0.3616,
+      "actual": 0.3757,
       "passed": true
     }
   },
