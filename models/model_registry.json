@@ -1,0 +1,46 @@
+{
+  "model_name": "sl-phishing-url-detector",
+  "production_version": "v1.2.0",
+  "selected_algorithm": "XGBoost",
+  "registered_at_utc": "2026-11-02T15:09:02Z",
+  "stage": "Production",
+  "data_lineage": {
+    "dataset_path": "data/raw/srilanka_phishing_dataset.csv",
+    "dataset_sha256": "a3e4d8dc93535714",
+    "total_records": 6000,
+    "num_features": 22,
+    "split_ratio": "70% Train / 15% Val / 15% Test"
+  },
+  "artifact_lineage": {
+    "model_path": "models/best_model.joblib",
+    "model_sha256": "58dcdd269763092f"
+  },
+  "quality_gates": {
+    "min_f1_score": {
+      "threshold": 0.95,
+      "actual": 0.9698,
+      "passed": true
+    },
+    "min_recall": {
+      "threshold": 0.95,
+      "actual": 0.9665,
+      "passed": true
+    },
+    "min_roc_auc": {
+      "threshold": 0.97,
+      "actual": 0.9828,
+      "passed": true
+    },
+    "max_latency_ms": {
+      "threshold": 5.0,
+      "actual": 0.3616,
+      "passed": true
+    }
+  },
+  "all_quality_gates_passed": true,
+  "retraining_policy": {
+    "psi_alert_threshold": 0.2,
+    "ks_p_value_alpha": 0.01,
+    "max_drifted_features_before_retrain": 3
+  }
+}

@@ -13,6 +13,7 @@ import streamlit as st
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from src.feature_extractor import extract_url_features, FEATURE_NAMES, FEATURE_DESCRIPTIONS
+from src.drift_monitor import evaluate_feature_drift, simulate_shifted_traffic, build_model_registry
 
 st.set_page_config(
     page_title="SL Phishing URL Detector - MSc AML",
@@ -128,11 +129,12 @@ st.markdown(
     "(`BOC`, `Sampath Vishwa`, `ComBank`, `HNB`, `FriMi`), `SL Post`, `CEB`, `Gov.lk`, and local telcos."
 )
 
-tab_scanner, tab_arena, tab_xai, tab_eda = st.tabs([
+tab_scanner, tab_arena, tab_xai, tab_eda, tab_mlops = st.tabs([
     "1. Live URL Scanner (SHAP & LIME)",
     "2. Model Comparison (6 Models)",
     "3. Explainability Analysis (SHAP vs LIME)",
     "4. Dataset & EDA",
+    "5. MLOps & Drift Monitor",
 ])
 
 # Tab 1: Live URL Scanner
@@ -370,3 +372,70 @@ with tab_eda:
 
     st.markdown("#### Sample Rows from Dataset")
     st.dataframe(full_df.head(25), use_container_width=True)
+
+# Tab 5: MLOps & Drift Monitor
+with tab_mlops:
+    st.subheader("MLOps Model Registry, Quality Gates & Data Drift Monitoring")
+
+    reg_path = "models/model_registry.json"
+    if os.path.exists(reg_path):
+        with open(reg_path, "r") as f:
+            registry = json.load(f)
+    else:
+        registry = build_model_registry()
+
+    m1, m2, m3, m4 = st.columns(4)
+    m1.metric("Model Version", registry["production_version"])
+    m2.metric("Deployment Stage", registry["stage"])
+    m3.metric("Dataset SHA-256", registry["data_lineage"]["dataset_sha256"])
+    m4.metric("Quality Gates Passed", "4 / 4" if registry["all_quality_gates_passed"] else "Failed")
+
+    st.markdown("#### Automated CI/CD Production Quality Gates")
+    gates_rows = []
+    for g_name, g_info in registry["quality_gates"].items():
+        gates_rows.append({
+            "Gate Check": g_name,
+            "Required Threshold": g_info["threshold"],
+            "Measured Value": g_info["actual"],
+            "Status": "PASS" if g_info["passed"] else "FAIL",
+        })
+    st.dataframe(pd.DataFrame(gates_rows), use_container_width=True, hide_index=True)
+
+    st.divider()
+    st.markdown("#### Covariate Shift & Data Drift Monitor (PSI & Two-Sample KS Test)")
+    st.write(
+        "Compares incoming URL feature distributions against the reference training baseline (`train.csv`). "
+        "A **Population Stability Index (PSI) >= 0.20** or **KS test p-value < 0.01** triggers a retraining alert."
+    )
+
+    sim_choice = st.radio(
+        "Select Incoming Traffic Batch to Evaluate:",
+        [
+            "Held-Out Test Set Baseline (Normal Production Traffic)",
+            "Simulated Adversarial Shift (New Smishing Wave with Longer Obfuscated URLs & New TLDs)",
+        ],
+        horizontal=True,
+    )
+
+    if "Normal" in sim_choice:
+        incoming_batch = test_df
+    else:
+        incoming_batch = simulate_shifted_traffic(test_df, scenario="new_attack_wave", n_samples=500)
+
+    drift_table = evaluate_feature_drift(train_df, incoming_batch)
+    num_drifted = int((drift_table["Status"] == "Drift Detected").sum())
+
+    if num_drifted >= registry["retraining_policy"]["max_drifted_features_before_retrain"]:
+        st.error(
+            f"**Retraining Alert Triggered:** {num_drifted} features exceed the drift threshold "
+            f"(policy limit: {registry['retraining_policy']['max_drifted_features_before_retrain']} features). "
+            "Scheduled pipeline retraining recommended."
+        )
+    else:
+        st.success(
+            f"**Distribution Stable:** {num_drifted} features drifted. Model `{registry['production_version']}` "
+            "remains within healthy operating bounds."
+        )
+
+    st.dataframe(drift_table, use_container_width=True, hide_index=True)
+
