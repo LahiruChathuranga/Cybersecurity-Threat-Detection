@@ -1,16 +1,6 @@
 """
-Explainable AI (XAI) Engine: SHAP & LIME Global and Local Explanations.
-
-Generates:
-1. SHAP Global Summary Beeswarm Plot (directionality + magnitude of all 22 features)
-2. SHAP Global Mean Absolute Importance Bar Plot
-3. SHAP Non-Linear Dependence & Feature Interaction Plots
-4. SHAP Local Waterfall Plots for 3 representative Sri Lankan cybersecurity case studies:
-   - Case 1: True Positive (Localized Sri Lankan Banking / Postal Phishing Attack)
-   - Case 2: True Negative (Authentic Sri Lankan Official .lk Portal)
-   - Case 3: Challenging Edge Case / Stealth Attack Analysis
-5. LIME Local Surrogate Explanations for the exact same case studies
-6. Quantitative SHAP vs. LIME Consistency (Top-K Feature Overlap & Rank Correlation) and Latency Comparison
+SHAP and LIME explainability analysis script.
+Computes global feature importance and local instance explanations on the test set.
 """
 
 import json

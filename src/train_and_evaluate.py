@@ -1,16 +1,7 @@
 """
-Multi-Model Training, Hyperparameter Tuning, and Comprehensive Evaluation Pipeline.
-
-Strictly adheres to project constraints:
-- NO Linear Regression
-- NO Logistic Regression
-- Compares 6 distinct non-linear ML models across 4 algorithmic families:
-  1. Random Forest Classifier (Bagging Ensemble)
-  2. XGBoost Classifier (Depth-wise Gradient Boosted Trees)
-  3. LightGBM Classifier (Leaf-wise Gradient Boosted Trees)
-  4. Support Vector Machine with RBF Kernel (Maximum-Margin Kernel Method - AML Unit 04)
-  5. Multi-Layer Perceptron Neural Network (Feedforward Deep Learning)
-  6. Gaussian Naive Bayes (Probabilistic Generative Model - AML Unit 05)
+Model training, cross-validation, and evaluation script.
+Compares 6 non-linear classifiers (Random Forest, XGBoost, LightGBM, SVM-RBF, MLP, and Gaussian Naive Bayes)
+without using Linear or Logistic Regression.
 """
 
 import json

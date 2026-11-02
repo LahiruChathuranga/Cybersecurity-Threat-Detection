@@ -1,8 +1,6 @@
 """
-Sri Lankan Cybersecurity Phishing & Smishing URL Feature Extractor (LankaShield-Phish).
-
-Extracts 22 interpretable lexical, host/structural, and Sri Lankan domain/brand
-threat intelligence features from any URL string in real time.
+URL feature extraction module for Sri Lankan phishing and smishing detection.
+Extracts 22 lexical, host structure, and localized (.lk / brand) features from a URL.
 """
 
 import math

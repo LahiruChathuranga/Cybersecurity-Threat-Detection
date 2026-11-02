@@ -1,27 +1,27 @@
-# 🛡️ LankaShield-Phish: Sri Lankan Cybersecurity Threat Detection & XAI
+# Sri Lankan Phishing & Smishing URL Detection
 
-An Explainable Machine Learning (XAI) system for detecting localized Sri Lankan phishing and SMS smishing URLs targeting local banking (`BOC`, `Sampath Vishwa`, `ComBank`, `HNB`, `FriMi`), e-government (`gov.lk`, `slpost.gov.lk`, `ird.gov.lk`), utilities (`ceb.lk`, `leco.lk`), and telecommunications (`Dialog`, `SLT-Mobitel`).
+MSc Applied Machine Learning project focused on detecting phishing and SMS smishing URLs targeting Sri Lankan banks (`BOC`, `Sampath Vishwa`, `ComBank`, `HNB`, `FriMi`), government portals (`gov.lk`, `slpost.gov.lk`, `ird.gov.lk`), utilities (`ceb.lk`, `leco.lk`), and telecommunications providers (`Dialog`, `Mobitel`).
 
-## Key Features
-- **22 Real-Time Cybersecurity & Sri Lankan Domain Features:** Lexical, host/structural, and localized `.lk` / brand-mismatch threat intelligence indicators.
-- **6 Non-Linear ML Models Compared:** `XGBoost`, `SVM (RBF Kernel)`, `LightGBM`, `Random Forest`, `MLP Neural Network`, and `Gaussian Naive Bayes` (strictly excluding Linear and Logistic Regression).
-- **Explainable AI (SHAP & LIME):** Global and local `TreeSHAP` explanations alongside local `LIME` surrogate decision rules.
-- **Interactive Streamlit SOC Dashboard:** Live URL scanner, 6-Model Arena comparator, XAI explorer, and dataset EDA.
+## Overview
+- **Feature Extraction:** Extracts 22 URL lexical, host structure, and Sri Lankan `.lk` / brand-mismatch features (`src/feature_extractor.py`).
+- **Model Training & Comparison:** Trains and compares 6 non-linear classification models (`XGBoost`, `SVM with RBF Kernel`, `LightGBM`, `Random Forest`, `MLPClassifier`, and `GaussianNB`) using 5-fold stratified cross-validation (`src/train_and_evaluate.py`). Linear and Logistic Regression are not used.
+- **Model Explainability:** Computes global and local explanations using `SHAP` (`TreeExplainer`) and `LIME` (`LimeTabularExplainer`) (`src/explainability.py`).
+- **Web Interface:** Streamlit dashboard (`app/streamlit_app.py`) for testing live URLs and viewing model comparisons and SHAP/LIME outputs.
 
-## Quick Start
+## Setup & Usage
 
-### 1. Install Dependencies
-*(On macOS Apple Silicon, ensure OpenMP is installed for XGBoost/LightGBM via `brew install libomp`)*
+1. Install required packages:
 ```bash
 pip install -r requirements.txt
 ```
+*(Note for macOS users: `XGBoost` and `LightGBM` require OpenMP, which can be installed via `brew install libomp`.)*
 
-### 2. Run the Interactive Streamlit Web App
+2. Launch the Streamlit application:
 ```bash
 streamlit run app/streamlit_app.py
 ```
 
-### 3. Re-Run the ML & XAI Pipeline
+3. Re-run the training and evaluation scripts (optional):
 ```bash
 python -m src.data_generator
 python -m src.train_and_evaluate

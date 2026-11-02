@@ -1,15 +1,6 @@
 """
-Sri Lankan Cybersecurity Phishing & Smishing Dataset Generator (LankaShield-Phish).
-
-Generates a realistic, diverse, and challenging dataset of ~6,000 URLs across 4 categories:
-1. Authentic Sri Lankan Legitimate URLs (.lk, .gov.lk, .ac.lk, .com.lk, SL banks, telcos, utilities)
-2. Global Legitimate URLs heavily accessed in Sri Lanka (including hard benign cases with HTTP, long query params, or URL shorteners)
-3. Localized Sri Lankan Phishing & Smishing URLs (SL Post customs scams, Sampath/BOC/ComBank/FriMi spoofing, CEB/IRD lures, typosquatting, .lk subdomain tricks)
-4. Stealth & Global Phishing URLs (including hard phishing cases that use HTTPS, clean-looking .com/.org domains, and minimal obvious urgency keywords)
-
-All 22 features are extracted directly from the generated URLs using `extract_url_features`,
-plus realistic controlled noise on borderline edge cases so ML models achieve realistic
-performance (~92%-97% F1) with rich False Positive / False Negative trade-offs to analyze.
+Dataset generation script for Sri Lankan phishing and legitimate URLs.
+Builds a balanced dataset of 6,000 URLs across 11 categories and extracts the 22 model features.
 """
 
 import os
