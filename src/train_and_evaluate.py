@@ -453,30 +453,50 @@ def evaluate_and_compare():
     plt.close()
 
     # 7. Speed vs Accuracy Pareto Frontier + 5-Fold Cross-Validation Stability Boxplot
-    fig, axes = plt.subplots(1, 2, figsize=(14, 5.5))
+    fig, axes = plt.subplots(1, 2, figsize=(15, 6))
+
+    # Distinct non-overlapping callout offsets (dx, dy in points) for each model on log-x scale
+    label_offsets = {
+        "XGBoost": (28, 22),
+        "SVM (RBF Kernel)": (-132, 16),
+        "LightGBM": (38, -22),
+        "Random Forest": (-128, -42),
+        "MLP Neural Net": (-110, -48),
+        "Gaussian Naive Bayes": (25, 6),
+    }
+
+    axes[0].set_xscale("log")
     for _, row in results_df.iterrows():
         m_name = row["Model"]
+        x_val = row["Inference_Latency_ms"]
+        y_val = row["Test_F1"]
         axes[0].scatter(
-            row["Inference_Latency_ms"],
-            row["Test_F1"],
-            s=180,
+            x_val,
+            y_val,
+            s=190,
             color=MODEL_COLORS[m_name],
             edgecolors="black",
             linewidth=1.5,
             zorder=5
         )
+        dx, dy = label_offsets.get(m_name, (15, 0))
         axes[0].annotate(
-            f"  {m_name}\n  ({row['Inference_Latency_ms']:.2f} ms, F1={row['Test_F1']:.4f})",
-            (row["Inference_Latency_ms"], row["Test_F1"]),
-            fontsize=8.5,
+            f"{m_name}\n({x_val:.2f} ms, F1={y_val:.4f})",
+            xy=(x_val, y_val),
+            xytext=(dx, dy),
+            textcoords="offset points",
+            fontsize=8.3,
             fontweight="bold",
-            va="center"
+            bbox=dict(boxstyle="round,pad=0.25", fc="white", ec=MODEL_COLORS[m_name], alpha=0.92, lw=1.1),
+            arrowprops=dict(arrowstyle="->", connectionstyle="arc3,rad=0.12", color="#444444", lw=1.0),
+            zorder=6,
         )
-    axes[0].set_xlabel("Single-URL Inference Latency (ms) [Lower is Better]", fontsize=10.5)
+    axes[0].set_xlabel("Single-URL Inference Latency (ms, Log Scale) [Lower is Better]", fontsize=10.5)
     axes[0].set_ylabel("Test F1-Score [Higher is Better]", fontsize=10.5)
     axes[0].set_title("A. Operational Trade-Off: F1-Score vs. Inference Latency", fontsize=12, fontweight="bold")
-    axes[0].grid(alpha=0.3)
-    axes[0].set_xlim(0, max(results_df["Inference_Latency_ms"]) * 1.35)
+    axes[0].grid(True, which="both", alpha=0.3)
+    axes[0].set_xlim(0.16, 28.0)
+    axes[0].set_ylim(0.77, 1.005)
 
     # CV F1 Mean + Error Bars
     y_pos = np.arange(len(results_df))
@@ -492,11 +512,11 @@ def evaluate_and_compare():
     axes[1].set_yticks(y_pos)
     axes[1].set_yticklabels(results_df["Model"], fontweight="bold")
     axes[1].invert_yaxis()
-    axes[1].set_xlim(0.75, 1.0)
+    axes[1].set_xlim(0.75, 1.025)
     axes[1].set_xlabel("5-Fold Stratified Cross-Validation F1-Score (Mean ± Std)")
     axes[1].set_title("B. 5-Fold Cross-Validation Stability", fontsize=12, fontweight="bold")
     for i, row in results_df.iterrows():
-        axes[1].text(row["CV_F1_Mean"] + row["CV_F1_Std"] + 0.004, i, f"{row['CV_F1_Mean']:.4f} ± {row['CV_F1_Std']:.4f}", va="center", fontsize=8.5)
+        axes[1].text(row["CV_F1_Mean"] + row["CV_F1_Std"] + 0.004, i, f"{row['CV_F1_Mean']:.4f} ± {row['CV_F1_Std']:.4f}", va="center", fontsize=8.5, fontweight="bold")
     axes[1].grid(axis="x", alpha=0.3)
 
     plt.tight_layout()
