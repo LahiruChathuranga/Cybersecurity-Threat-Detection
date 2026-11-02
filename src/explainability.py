@@ -101,7 +101,7 @@ def run_explainability_suite():
     # --- Plot 8: SHAP Summary Beeswarm Plot ---
     plt.figure(figsize=(11, 8))
     shap.plots.beeswarm(clean_shap_exp, max_display=16, show=False)
-    plt.title(f"SHAP Global Summary (Beeswarm) — {best_model_name} on Held-Out Test Set", fontsize=13, fontweight="bold", pad=14)
+    plt.title(f"SHAP Global Summary (Beeswarm) ({best_model_name} on Held-Out Test Set)", fontsize=13, fontweight="bold", pad=14)
     plt.tight_layout()
     plt.savefig(os.path.join(fig_dir, "08_shap_summary_beeswarm.png"), bbox_inches="tight")
     plt.close()
@@ -109,7 +109,7 @@ def run_explainability_suite():
     # --- Plot 9: SHAP Global Bar Importance Plot ---
     plt.figure(figsize=(10, 7.5))
     shap.plots.bar(clean_shap_exp, max_display=16, show=False)
-    plt.title(f"Global Feature Importance (Mean |SHAP Value|) — {best_model_name}", fontsize=13, fontweight="bold", pad=14)
+    plt.title(f"Global Feature Importance (Mean |SHAP Value|) ({best_model_name})", fontsize=13, fontweight="bold", pad=14)
     plt.tight_layout()
     plt.savefig(os.path.join(fig_dir, "09_shap_global_bar.png"), bbox_inches="tight")
     plt.close()
@@ -233,7 +233,7 @@ def run_explainability_suite():
         ax.axvline(0, color="black", lw=1)
         ax.set_xlabel("LIME Local Linear Surrogate Weight (+ Phishing / - Legitimate)", fontsize=10.5)
         ax.set_title(
-            f"LIME Local Explanation — {title}\nURL: {row_info['url'][:78]}... (Prob={row_info['pred_prob']:.4f})",
+            f"LIME Local Explanation ({title})\nURL: {row_info['url'][:78]}... (Prob={row_info['pred_prob']:.4f})",
             fontsize=10.5,
             fontweight="bold"
         )

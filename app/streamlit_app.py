@@ -105,7 +105,7 @@ metrics_summary, xai_summary, all_models, best_model, scaler, shap_explainer, li
 # Sidebar
 with st.sidebar:
     st.markdown("## SL Phishing Detector")
-    st.caption("MSc Applied Machine Learning Project — Detecting localized Sri Lankan phishing & smishing URLs")
+    st.caption("MSc Applied Machine Learning Project: Detecting localized Sri Lankan phishing & smishing URLs")
     st.divider()
     st.markdown("### Selected Best Model")
     st.info(

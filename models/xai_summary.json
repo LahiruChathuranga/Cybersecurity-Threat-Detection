@@ -1,7 +1,7 @@
 {
   "champion_model": "XGBoost",
-  "shap_latency_ms_per_sample": 0.05,
-  "lime_latency_ms_per_sample": 5.35,
+  "shap_latency_ms_per_sample": 0.048,
+  "lime_latency_ms_per_sample": 5.29,
   "mean_top5_feature_agreement": 0.495,
   "mean_spearman_rank_correlation": 0.3398,
   "global_top10_features": [
@@ -123,7 +123,7 @@
       ],
       "shap_figure": "11_shap_waterfall_case1_sl_phishing_tp.png",
       "lime_figure": "12_lime_local_case1_sl_phishing_tp.png",
-      "lime_latency_ms": 7.77
+      "lime_latency_ms": 7.82
     },
     {
       "slug": "case2_sl_legit_tn",
@@ -191,7 +191,7 @@
       ],
       "shap_figure": "11_shap_waterfall_case2_sl_legit_tn.png",
       "lime_figure": "12_lime_local_case2_sl_legit_tn.png",
-      "lime_latency_ms": 7.85
+      "lime_latency_ms": 7.63
     },
     {
       "slug": "case3_stealth_edge",
@@ -259,7 +259,7 @@
       ],
       "shap_figure": "11_shap_waterfall_case3_stealth_edge.png",
       "lime_figure": "12_lime_local_case3_stealth_edge.png",
-      "lime_latency_ms": 7.53
+      "lime_latency_ms": 7.5
     }
   ]
 }
